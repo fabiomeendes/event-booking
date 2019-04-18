@@ -1,0 +1,26 @@
+I followed this playlist:
+https://www.youtube.com/watch?v=7giZGFDGnkc&list=PL55RiY5tL51rG1x02Yyj93iypUuHYXcB_
+
+Config node:
+npm init
+npm install --save express body-parser
+npm install --save--dev nodemon
+create and configure app.js
+configure package.json
+npm start 
+http://localhost:2469/
+
+Config GraphQl:
+npm install --save express-graphql graphql
+configure app.js
+npm start 
+http://localhost:2469/graphql
+
+new Date().toISOString() = "2019-04-14T16:17:22.973Z"
+
+#5
+
+
+
+
+
