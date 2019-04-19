@@ -16,9 +16,42 @@ configure app.js
 npm start 
 http://localhost:2469/graphql
 
-new Date().toISOString() = "2019-04-14T16:17:22.973Z"
+Config database
+MongoDB Atlas => new user, IP Whitelist and Connect
+npm install --save mongoose
+config nodemon.json
+config app.js
+new model Event
+and change the app.js 
 
-#5
+-----------------------------------------------------------------------------
+
+#6
+new Date().toISOString() = "2019-04-14T16:17:22.973Z"
+mongoose-schema-to-graphql
+
+// app.get('/', (req, res, next) => {
+//     res.send('Hello World!');
+// });  (APP.JS)
+
+mutation{
+  createEvent(eventInput:{
+		title:"Title 2"
+  	description:"Description test"
+    price: 9.99
+    date: "2019-04-14T16:17:22.973Z"
+  }){
+    _id
+    title
+  }
+}
+
+query{
+  events{
+    _id
+    title
+  }
+}
 
 
 
