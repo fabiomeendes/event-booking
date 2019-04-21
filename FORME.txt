@@ -16,13 +16,18 @@ configure app.js
 npm start 
 http://localhost:2469/graphql
 
-Config database
+Config database:
 MongoDB Atlas => new user, IP Whitelist and Connect
 npm install --save mongoose
 config nodemon.json
 config app.js
 new model Event
 and change the app.js 
+
+Relation UserXEvent:
+adjust models
+npm install --save bcryptjs -> to password encryption
+ajust the app.js - method create User and Event
 
 -----------------------------------------------------------------------------
 
@@ -50,6 +55,16 @@ query{
   events{
     _id
     title
+  }
+}
+
+mutation {
+  createUser(userInput:{
+    email: "test1@test.com"
+    password: "tester"
+  }){
+    email
+    password
   }
 }
 
