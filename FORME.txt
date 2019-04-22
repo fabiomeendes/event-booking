@@ -68,7 +68,15 @@ mutation {
   }
 }
 
-
+install prettier
+// Set the default
+"editor.formatOnSave": false,
+// Enable per-language
+"[javascript]": {
+    "editor.formatOnSave": true
+}
+user settings - JSON 
+crtl shift p
 
 
 
