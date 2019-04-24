@@ -31,7 +31,7 @@ ajust the app.js - method create User and Event
 
 -----------------------------------------------------------------------------
 
-#6
+#7 6:30
 new Date().toISOString() = "2019-04-14T16:17:22.973Z"
 mongoose-schema-to-graphql
 
@@ -73,7 +73,7 @@ install prettier
 "editor.formatOnSave": false,
 // Enable per-language
 "[javascript]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true // or false to disable
 }
 user settings - JSON 
 crtl shift p
