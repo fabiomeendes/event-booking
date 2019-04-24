@@ -3,17 +3,42 @@ const bcrypt = require('bcryptjs');
 const Event = require('../../models/event');
 const User = require('../../models/user');
 
+const events = eventIds => {
+    return Event.find({_id: {$in: eventIds}})
+        .then(events => {
+            return events.map(event => {
+                return { 
+                    ...event._doc, 
+                    creator: user.bind(this, event.creator)
+                }
+            })
+        })
+        .catch(err => {
+            throw err;
+        })
+}
+
+const user = userId => {
+    return User.findById(userId)
+        .then(user => {
+            return { 
+                ...user._doc,
+                createdEvents: events.bind(this, user._doc.createdEvents) 
+            };
+        })
+        .catch(err => {
+            throw err;
+        })
+}
+
 module.exports = {
         events: () => {
-            return Event.find()
-                .populate('creator')
+            return Event.find()                
                 .then(events => {
                     return events.map(event => {
                         return { 
                             ...event._doc,
-                            creator: {
-                                ...event._doc.creator._doc,
-                            }
+                            creator: user.bind(this, event._doc.creator)
                         };
                         //return { ...event._doc, _id: event._doc._id.toString() };
                         //return { ...event._doc, _id: event.id }; id is a string already                 
@@ -34,7 +59,10 @@ module.exports = {
             return event
             .save()
             .then(result => {                
-                createdEvent = { ...result._doc };
+                createdEvent = { 
+                    ...result._doc,
+                    creator: user.bind(this, result._doc.creator)
+                };
                 //return { ...result._doc, _id: result._doc._id.toString() };   
                 return User.findById('5cbc7eee4618b948a80d5712');
             })
@@ -74,5 +102,5 @@ module.exports = {
                 .catch(err => {
                     throw err;
                 });            
-        }
+        },        
     }
