@@ -31,7 +31,7 @@ ajust the app.js - method create User and Event
 
 -----------------------------------------------------------------------------
 
-#8 11:00
+#9 00 - lack valdations of nullable value
 new Date().toISOString() = "2019-04-14T16:17:22.973Z"
 mongoose-schema-to-graphql
 

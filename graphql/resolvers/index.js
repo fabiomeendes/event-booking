@@ -4,15 +4,22 @@ const Event = require('../../models/event');
 const User = require('../../models/user');
 const Booking = require('../../models/booking');
 
+const transformerEvent = event => {
+    return {
+        ...event._doc,
+        _id: event.id, // maybe don´t need
+        date: new Date(event._doc.date).toISOString(),
+        creator: user.bind(this, event.creator)
+        //return { ...event._doc, _id: event._doc._id.toString() };
+        //return { ...event._doc, _id: event.id }; id is a string already    
+    };
+}
+
 const events = async eventIds => {    
     try {
         const events = await Event.find( { _id: {$in: eventIds } });
         return events.map(event => {
-            return {
-                ...event._doc,
-                date: new Date(event._doc.date).toISOString(),  
-                creator: user.bind(this, event.creator)
-            }
+            return transformerEvent(event);            
         });
     } catch (err) {
         throw err;
@@ -22,11 +29,7 @@ const events = async eventIds => {
 const singleEvent = async eventId => {
     try {
         const event = await Event.findById(eventId);
-        return {
-            ...event._doc,
-            _id: event.id,
-            creator: user.bind(this, event.creator)
-        }
+        return transformerEvent(event);
     } catch(err) {
         throw err;
     }
@@ -49,13 +52,8 @@ module.exports = {
         try {
             const events = await Event.find();
             return events.map(event => {
-                return {
-                    ...event._doc,
-                    date: new Date(event._doc.date).toISOString(),
-                    creator: user.bind(this, event._doc.creator)
-                };
-                //return { ...event._doc, _id: event._doc._id.toString() };
-                //return { ...event._doc, _id: event.id }; id is a string already                 
+                return transformerEvent(event);
+                             
             });
         } catch (err){
             throw err;
@@ -89,12 +87,7 @@ module.exports = {
         let createdEvent;
         try {
             const result = await event.save();                
-            createdEvent = {
-                ...result._doc,
-                date: new Date(event._doc.date).toISOString(),
-                creator: user.bind(this, result._doc.creator)
-            };
-            //return { ...result._doc, _id: result._doc._id.toString() };
+            createdEvent = transformerEvent(result);            
             const creator = await User.findById('5cc0ba8ba77f37172c7a0cc9');
             if (!creator) {
                 throw new Error('User not found!');
@@ -145,11 +138,7 @@ module.exports = {
     cancelBooking: async args => {
         try {
             const booking = await Booking.findById(args.bookingId).populate('event');
-            const event = { 
-                ...booking.event._doc,
-                _id: booking.event._id,
-                creator: user.bind(this, booking.event._doc.creator)
-            };
+            const event = transformerEvent(booking._doc.event);
             await Booking.deleteOne({ _id: args.bookingId });
             return event;
         } catch (err) {
