@@ -3,16 +3,28 @@ const bcrypt = require('bcryptjs');
 const Event = require('../../models/event');
 const User = require('../../models/user');
 const Booking = require('../../models/booking');
+const { dateToString } = require('../../helpers/date');
 
 const transformerEvent = event => {
     return {
         ...event._doc,
         _id: event.id, // maybe don´t need
-        date: new Date(event._doc.date).toISOString(),
+        date: dateToString(event._doc.date),
         creator: user.bind(this, event.creator)
-        //return { ...event._doc, _id: event._doc._id.toString() };
-        //return { ...event._doc, _id: event.id }; id is a string already    
+        // return { ...event._doc, _id: event._doc._id.toString() };
+        // return { ...event._doc, _id: event.id }; id is a string already
     };
+}
+
+const transformBooking = booking => {
+    return {
+        ...booking._doc,
+        _id: booking.id,
+        user: user.bind(this, booking._doc.user),
+        event: singleEvent.bind(this, booking._doc.event),
+        createdAt: dateToString(booking._doc.createdAt),
+        updateAt: dateToString(booking._doc.updateAt)
+    }
 }
 
 const events = async eventIds => {    
@@ -63,14 +75,7 @@ module.exports = {
         try {
             const bookings = await Booking.find();
             return bookings.map(booking => {
-                return {
-                    ...booking._doc,
-                    _id: booking.id,
-                    user: user.bind(this, booking._doc.user),
-                    event: singleEvent.bind(this, booking._doc.event),
-                    createdAt: new Date(booking._doc.createdAt).toISOString(),
-                    updateAt: new Date(booking._doc.createdAt).toISOString()
-                };
+                return transformBooking(booking);                    
             });
         } catch (err) {
             throw err;
@@ -81,7 +86,7 @@ module.exports = {
             title: args.eventInput.title,
             description: args.eventInput.description,
             price: args.eventInput.price,
-            date: new Date(args.eventInput.date),
+            date: dateToString(args.eventInput.date),
             creator: '5cc0ba8ba77f37172c7a0cc9'
         });
         let createdEvent;
@@ -117,7 +122,7 @@ module.exports = {
         }
     },
     bookEvent: async args => { // the same name -> root mutation/query        
-        const fetchedEvent = await Event.findOne({ _id: args.eventId});        
+        const fetchedEvent = await Event.findOne({ _id: args.eventId });        
         if (!fetchedEvent) {
             throw new Error('Event not found!');
         }
@@ -126,14 +131,7 @@ module.exports = {
             event: fetchedEvent
         });
         const result = await booking.save();
-        return {
-            ...result._doc,
-            _id: result.id,
-            user: user.bind(this, booking._doc.user),
-            event: singleEvent.bind(this, booking._doc.event),
-            createdAt: new Date(result._doc.createdAt).toString(),
-            updateAt: new Date(result._doc.updateAt).toString()
-        };
+        return transformBooking(result);
     },
     cancelBooking: async args => {
         try {
