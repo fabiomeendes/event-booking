@@ -31,7 +31,9 @@ ajust the app.js - method create User and Event
 
 -----------------------------------------------------------------------------
 
-#9 00 - lack valdations of nullable value
+#lack validations of nullable value.
+#10 00:00 
+
 new Date().toISOString() = "2019-04-14T16:17:22.973Z"
 mongoose-schema-to-graphql
 
@@ -39,6 +41,17 @@ mongoose-schema-to-graphql
 //     res.send('Hello World!');
 // });  (APP.JS)
 
+
+mutation {
+  createUser(userInput:{
+    email: "test1@test.com"
+    password: "tester"
+  }){
+    _id
+    email
+    password
+  }
+}
 mutation{
   createEvent(eventInput:{
 		title:"Title 2"
@@ -51,20 +64,34 @@ mutation{
   }
 }
 
-query{
-  events{
+mutation {
+  bookEvent(eventId:"5cc20268dc90170f1c2e428e"){
     _id
-    title
+    event{
+      title
+      creator{
+        email
+        createdEvents{
+          title
+        }
+      }
+    }
+    user{
+      email
+      createdEvents{
+        title
+      }
+    }
   }
 }
 
-mutation {
-  createUser(userInput:{
-    email: "test1@test.com"
-    password: "tester"
-  }){
-    email
-    password
+mutation{
+  cancelBooking (bookingId: "5cc3213eeb146d0890b2f4ca"){
+    title
+    date
+    creator{
+      email
+    }
   }
 }
 
