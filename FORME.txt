@@ -29,6 +29,11 @@ adjust models
 npm install --save bcryptjs -> to password encryption
 ajust the app.js - method create User and Event
 
+RootQuery and RootMutation must have the same name that the methods in Resolvers.
+
+Tokek Authentication
+npm install --save jsonwebtoken
+
 -----------------------------------------------------------------------------
 
 #lack validations of nullable value.
@@ -102,8 +107,10 @@ install prettier
 "[javascript]": {
     "editor.formatOnSave": true // or false to disable
 }
-user settings - JSON 
 crtl shift p
+>json
+settings
+
 
 
 
