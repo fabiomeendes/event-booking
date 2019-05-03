@@ -34,6 +34,11 @@ RootQuery and RootMutation must have the same name that the methods in Resolvers
 Tokek Authentication
 npm install --save jsonwebtoken
 
+ESLint installation
+npm install eslint --save-dev
+./node_modules/.bin/eslint --init
+force errors, node, airbnb
+
 -----------------------------------------------------------------------------
 
 #lack validations of nullable value.

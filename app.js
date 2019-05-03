@@ -14,14 +14,14 @@ app.use(bodyParser.json());
 app.use(isAuth);
 
 app.use('/graphql', graphqlHttp({
-    schema: graphQlSchema,
-    rootValue: graphQlResolvers,            
-    graphiql: true
+  schema: graphQlSchema,
+  rootValue: graphQlResolvers,
+  graphiql: true,
 }));
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-bixr7.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`)
-.then(() => {
+  .then(() => {
     app.listen(2469);
-}).catch(err => {
-    console.log(err,"ERROR");
-});
+  }).catch((err) => {
+    console.log(err, 'ERROR');
+  });
