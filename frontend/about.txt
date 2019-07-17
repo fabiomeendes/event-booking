@@ -3,3 +3,6 @@ npx create-react-app . (empty folder)
 run: npm start
 
 npm install --save react-router-dom
+
+npm install eslint --save-dev
+eslint --init
